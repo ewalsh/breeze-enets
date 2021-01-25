@@ -2,3 +2,6 @@
 *.class
 target
 project/target
+
+notebooks/.ipynb_checkpoints/
+logs/

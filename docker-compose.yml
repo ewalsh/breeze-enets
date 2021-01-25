@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  zeppelin:
+    image: ewalsh200/zeppelin:focal
+    ports:
+      - '8080:8080'
+    environment:
+      - "ZEPPELIN_LOG_DIR=./logs"
+    volumes:
+    - ./logs:/opt/zeppelin-0.9.0-preview2-bin-all/logs
+    - ./notebooks:/opt/zeppelin-0.9.0-preview2-bin-all/notebook
+    - ./conf:/opt/zeppelin-0.9.0-preview2-bin-all/conf
+    - ./lib:/opt/zeppelin-0.9.0-preview2-bin-all/jars
