@@ -1,3 +1,11 @@
+# Notes for fork
+This fork is a simple update to scala 2.12 and breeze 1.0. Nothing else of importance
+is yet changed. I personally prefer Apache Zeppelin to Jupyter and so I have
+added a Docker image to make this easier to run/test.
+
+You can get this working by running `docker-compose up` in the base directory
+Then go to http://localhost:8080
+
 # ENETS (Elastic Nets in Scala)
 
 Simple framework for running generalized linear models or robust linear models with elastic net regularization in scala.  Optimization is completed via coordinate descent as laid out in [Regularization Paths for Generalized Linear Models via Coordinate Descent](http://web.stanford.edu/~hastie/Papers/glmnet.pdf)
@@ -28,11 +36,11 @@ The robust norms are based on the implementation in statsmodels for Python.
 
 ## Requirements
 
-[Breeze](https://github.com/scalanlp/breeze). 
+[Breeze](https://github.com/scalanlp/breeze).
 
 [SBT](www.scala-sbt.org)
 
-## Usage 
+## Usage
 
 ~~~
 import breeze.linalg.{DenseVector,DenseMatrix}
@@ -53,22 +61,18 @@ linreg.fit
 val hr = new RlmNet(x,y,rnorm=HuberT())
 hr.fit
 ~~~
-If you want to be able to use this in jupyter-scala notebooks, change the scala version in build.sbt to 2.11.x and run 
+If you want to be able to use this in jupyter-scala notebooks, change the scala version in build.sbt to 2.11.x and run
 
 `sbt package`
 
-Then from jupyter notebook 
+Then from jupyter notebook
 
 `classpath.addPath("$PATH/enets/target/scala-2.11/enets_2.11-1.0.jar")`
 
-and 
+and
 
 `classpath.add("org.scalanlp" %% "breeze" % "0.13.2",
     "org.scalanlp" %% "breeze-natives" % "0.13.2",
     "org.scalanlp" %% "breeze-viz" % "0.13.2")`
-    
+
 See the usage notebook in the notebooks folder.
-
-
-
-
