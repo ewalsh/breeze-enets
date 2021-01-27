@@ -74,6 +74,9 @@ class AkkaGlmNet(
         log.info(s"slave ${a} search results received by master")
 
         slavesNotFinished -= 1
+        val pctComplete = ((numPartitions - slavesNotFinished)/numPartitions) * 100.0
+
+        // println(s"${pctComplete.toInt}%")
 
         log.info(s"${slavesNotFinished} workers still working...")
         collectedResults += mod

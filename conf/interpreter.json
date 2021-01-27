@@ -1003,13 +1003,13 @@
         },
         "spark.jars": {
           "name": "spark.jars",
-          "value": "/opt/zeppelin-0.9.0-preview2-bin-all/jars/enets_2.12-1.02.jar",
+          "value": "/opt/zeppelin-0.9.0-preview2-bin-all/jars/enets_2.12-1.03.jar",
           "type": "string",
           "description": "Comma-separated list of jars to include on the driver and executor classpaths. Globs are allowed."
         },
         "spark.jars.packages": {
           "name": "spark.jars.packages",
-          "value": "org.scalanlp:breeze_2.12:1.0,org.scalanlp:breeze-natives_2.12:1.0,org.scalanlp:breeze-viz_2.12:1.0",
+          "value": "org.scalanlp:breeze_2.12:1.0,org.scalanlp:breeze-natives_2.12:1.0,org.scalanlp:breeze-viz_2.12:1.0,com.typesafe.akka:akka-actor_2.12:2.6.11",
           "type": "string",
           "description": "Comma-separated list of Maven coordinates of jars to include on the driver and executor classpaths. The coordinates should be groupId:artifactId:version. If spark.jars.ivySettings is given artifacts will be resolved according to the configuration in the file, otherwise artifacts will be searched for in the local maven repo, then maven central and finally any additional remote repositories given by the command-line option --repositories."
         },

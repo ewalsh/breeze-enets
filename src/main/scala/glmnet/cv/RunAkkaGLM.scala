@@ -5,11 +5,11 @@ import ai.economicdatasciences.enets.cv.AkkaGlmNet.AlphaQueryInput
 import akka.actor.{ActorSystem, Props, Actor}
 import breeze.linalg.{DenseMatrix, DenseVector}
 import com.github.timsetsfire.enets.utils.mseEval
-import ai.economicdatasciences.enets.cv.AkkaGlmSlave.AkkaModelFit
+// import ai.economicdatasciences.enets.cv.AkkaGlmSlave.AkkaModelFit
 import ai.economicdatasciences.enets.cv.CvModelFit
 
-import java.io.File
-import breeze.linalg.csvread
+// import java.io.File
+// import breeze.linalg.csvread
 
 case class AkkaInput(features: DenseMatrix[Double], target: DenseVector[Double],
   nFolds: Int, alphaStep: Double,
@@ -92,6 +92,19 @@ object RunAkka {
 
   def getModel(): CvModelFit = {
     fittedModel.get
+  }
+
+  def predictAkka(newInputs: DenseMatrix[Double]): Option[DenseVector[Double]] = {
+    fittedModel match {
+      case None => {
+        println("Fit Model before prediction")
+        None
+      }
+      case _ => {
+        val tmp = fittedModel.get
+        Some((newInputs * tmp.b) + tmp.b0)
+      }
+    }
   }
 
 }
