@@ -146,7 +146,11 @@ class ElasticNet (
     * the calculation
     * @param parms Params of the linear Model
     * @param lambda regularization term
-    * @param alpha mixing of the L1 and L2 regularization
+    * @param alpha mixing of theval lambda = 2*exp(lambdaSeq(iter)) - exp(lambdaSeq(iter - 1))
+        val z = dist.z(x, y, exposure, parms)
+        val s = dist.w(x, y, exposure, parms)
+        val r = (y - dist.yhat(x, exposure, parms) )
+        weight := rnorm.w(r / mad(r)) L1 and L2 regularization
     */
   def costFunc(dist: Family)(parms: Params, lambda: Double, alpha: Double) = {
     //deviance based cost function
@@ -170,6 +174,11 @@ class ElasticNet (
     val lambdaMax = max( abs( xTy ) ) / (if(alpha==0) 0.001 else alpha)
     val lambdaMin = if(x.rows < x.cols) lambdaMax * 1e-2 else lambdaMax * 1e-4
     lambdaSeq := linspace(log(lambdaMax), log(lambdaMin), 100)
+  }
+
+  // get the lambda sequence
+  def getLambdaSeq(): DenseVector[Double] = {
+    lambdaSeq
   }
 
   // initialize vector to store the deviance
@@ -199,6 +208,7 @@ class ElasticNet (
       deviance(iter) = dist.dev(parms)
     }
   }
+
   /** plot the coordinate path
     */
   def plotCoordinatePath = {
@@ -210,28 +220,56 @@ class ElasticNet (
   }
 
     /**
+   * fork addition
    * Given a new input example vector and a weight vector, predict the output
    * @param input Input example vector.
+   * @param betas Vector of weights
+   * @param intercept Double of the intercept
    * @return Prediction in DenseVector[Double].
    */
-  def predict(input: DenseMatrix[Double]): DenseVector[Double] = {
-    (input * parms.b) + parms.b0(0)
+  def predict(input: DenseMatrix[Double], betas: DenseVector[Double], intercept: Double): DenseVector[Double] = {
+    (input * betas) + intercept
   }
 
   /**
+   * fork addition
    * Compute the evaluation (normaly MSE) for a GlmNet model on test data.
+   * @param betas Vector of weights
+   * @param intercept Double of intercept
    * @param inputs Inputs for test data.
-   * @param targets Outputs for test data.
+   * @param target Outputs for test data.
+   * @param evaluator function to evaluate errors
    * @return evaluation output (MSE).
    */
-  def evaluate(inputs: DenseMatrix[Double],
-               targets: DenseVector[Double],
+  def evaluate(betas: DenseVector[Double],
+               intercept: Double,
+               inputs: DenseMatrix[Double],
+               target: DenseVector[Double],
                evaluator: (DenseVector[Double], DenseVector[Double]) => Double): Double = {
 
     //compute predictions
-    val preds = predict(inputs)
+    val preds = predict(inputs, betas, intercept)
 
-    //compare predictions to targets using MSE
-    evaluator(preds, targets)
+    //compare predictions to target using MSE
+    evaluator(preds, target)
+  }
+
+  /**
+  * fork addition
+  * choose the best model based on the evaluator function
+  * @param inputs Inputs for test data
+  * @param target our Y data
+  * @param evaluator function to evaluate errors
+  * @return data type holding intercept, betas, lambda, alpha, and eval output
+  */
+  def chooseBestFit(inputs: DenseMatrix[Double],
+                    target: DenseVector[Double],
+                    evaluator: (DenseVector[Double], DenseVector[Double]) => Double): ModelFit = {
+
+      val evals = (0 to (b.cols - 1)).map(iter => { evaluator((inputs * b(::,iter)) + b0(iter), target) }).toArray
+      val bestEval = evals.min
+      val bestEvalId = evals.zipWithIndex.filter(_._1 == bestEval)(0)._2
+
+      ModelFit(b0(bestEvalId), b(::, bestEvalId), lambdaSeq(bestEvalId), alpha, bestEval)
   }
 }

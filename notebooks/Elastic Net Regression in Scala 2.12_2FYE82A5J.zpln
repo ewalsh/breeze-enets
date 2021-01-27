@@ -3,7 +3,7 @@
     {
       "text": "%md\n\u003ch2\u003eElastic Net Regression in Scala\u003c/h2\u003e\nEnets is a simple framework for estimating generalized and robust linear models with elastic net regularization in scala.\n\nCurrently, the GLMs supporting include\n* Gaussian\n* Poisson\n* Negative Binomial and\n* Binomial \n\nand RLMs include the following robust norms\n* Huber\n* Approximate (Smooth) Huber\n* Tukey\n* L1\n* Trimmed Mean\n* Ramsay\n* Cauchy",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 15:17:36.114",
+      "dateUpdated": "2021-01-26 17:34:27.621",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -38,14 +38,14 @@
       "jobName": "paragraph_1611587316733_1123634891",
       "id": "paragraph_1611587316733_1123634891",
       "dateCreated": "2021-01-25 15:08:36.733",
-      "dateStarted": "2021-01-25 15:17:36.113",
-      "dateFinished": "2021-01-25 15:17:36.132",
+      "dateStarted": "2021-01-26 17:34:27.645",
+      "dateFinished": "2021-01-26 17:34:29.017",
       "status": "FINISHED"
     },
     {
       "text": "%spark\nsc.version",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 15:47:48.688",
+      "dateUpdated": "2021-01-26 17:34:29.117",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -78,14 +78,14 @@
       "jobName": "paragraph_1611587650924_62609025",
       "id": "paragraph_1611587650924_62609025",
       "dateCreated": "2021-01-25 15:14:10.924",
-      "dateStarted": "2021-01-25 15:47:48.715",
-      "dateFinished": "2021-01-25 15:48:42.453",
+      "dateStarted": "2021-01-26 17:34:29.124",
+      "dateFinished": "2021-01-26 17:35:26.042",
       "status": "FINISHED"
     },
     {
-      "text": "%spark\nimport java.io.File\nimport breeze.linalg.{DenseVector, DenseMatrix}\nimport breeze.linalg.csvread\nimport com.github.timsetsfire.enets._\nimport com.github.timsetsfire.enets.robust.norms._",
+      "text": "%spark\nimport java.io.File\nimport breeze.linalg.{DenseVector, DenseMatrix}\nimport breeze.linalg.csvread\n// import com.github.timsetsfire.enets._\n// import com.github.timsetsfire.enets.robust.norms._\nimport com.github.ewalsh.enets.cv._\nimport com.github.timsetsfire.enets.utils.mseEval",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 16:12:37.125",
+      "dateUpdated": "2021-01-26 17:40:37.215",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -108,7 +108,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "import java.io.File\nimport breeze.linalg.{DenseVector, DenseMatrix}\nimport breeze.linalg.csvread\nimport com.github.timsetsfire.enets._\nimport com.github.timsetsfire.enets.robust.norms._\nimport java.io.{FileReader, FileWriter, BufferedReader}\nimport scala.collection.mutable.MutableList\n"
+            "data": "import java.io.File\nimport breeze.linalg.{DenseVector, DenseMatrix}\nimport breeze.linalg.csvread\nimport com.github.ewalsh.enets.cv._\n"
           }
         ]
       },
@@ -118,14 +118,14 @@
       "jobName": "paragraph_1611588271723_203064953",
       "id": "paragraph_1611588271723_203064953",
       "dateCreated": "2021-01-25 15:24:31.723",
-      "dateStarted": "2021-01-25 15:59:02.911",
-      "dateFinished": "2021-01-25 15:59:03.201",
+      "dateStarted": "2021-01-26 17:35:26.090",
+      "dateFinished": "2021-01-26 17:35:26.588",
       "status": "FINISHED"
     },
     {
       "text": "%spark\n// import boston dataset \nval x \u003d csvread(new File(\"./conf/data/bostonX.csv\"))\nval y \u003d csvread(new File(\"./conf/data/bostonY.csv\")).toDenseVector",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 16:36:00.573",
+      "dateUpdated": "2021-01-26 17:35:26.596",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -158,14 +158,14 @@
       "jobName": "paragraph_1611588614034_753410778",
       "id": "paragraph_1611588614034_753410778",
       "dateCreated": "2021-01-25 15:30:14.035",
-      "dateStarted": "2021-01-25 16:12:25.640",
-      "dateFinished": "2021-01-25 16:12:25.887",
+      "dateStarted": "2021-01-26 17:35:26.607",
+      "dateFinished": "2021-01-26 17:35:27.957",
       "status": "FINISHED"
     },
     {
-      "text": "%spark\nval glmnet \u003d new GlmNet(x,y,standardizeTarget\u003dtrue)\n// features are standardized by default\n// fit glmnet\nglmnet.fit\n// no inline plotting available, this will popup in a new window\n// glmnet.plotCoordinatePath\n\n",
+      "text": "%spark\nval nfld \u003d x.rows / 3\nval glmnet \u003d new CvGlmNet(x, y, nfld)\n// features are standardized by default\n// fit glmnet\nval cvTest \u003d glmnet.fit(mseEval)\n// no inline plotting available, this will popup in a new window\n// glmnet.plotCoordinatePath\n\n",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 16:13:47.002",
+      "dateUpdated": "2021-01-26 17:35:28.313",
       "config": {
         "colWidth": 12.0,
         "fontSize": 9.0,
@@ -188,7 +188,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "\u001b[1m\u001b[34mglmnet\u001b[0m: \u001b[1m\u001b[32mcom.github.timsetsfire.enets.GlmNet\u001b[0m \u003d com.github.timsetsfire.enets.GlmNet@678ba43e\n"
+            "data": "\u001b[1m\u001b[34mnfld\u001b[0m: \u001b[1m\u001b[32mInt\u001b[0m \u003d 168\n\u001b[1m\u001b[34mglmnet\u001b[0m: \u001b[1m\u001b[32mcom.github.ewalsh.enets.cv.CvGlmNet\u001b[0m \u003d com.github.ewalsh.enets.cv.CvGlmNet@41d9c463\n\u001b[1m\u001b[34mcvTest\u001b[0m: \u001b[1m\u001b[32mcom.github.ewalsh.enets.cv.CvModelFit\u001b[0m \u003d CvModelFit(22.532805629127033,DenseVector(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0),1.913287184584464,1.0,85.32574053138751,120.10354598614364,766.5176844811988)\n"
           }
         ]
       },
@@ -198,14 +198,94 @@
       "jobName": "paragraph_1611589368439_1774689875",
       "id": "paragraph_1611589368439_1774689875",
       "dateCreated": "2021-01-25 15:42:48.440",
-      "dateStarted": "2021-01-25 16:13:47.009",
-      "dateFinished": "2021-01-25 16:13:47.359",
+      "dateStarted": "2021-01-26 17:35:28.324",
+      "dateFinished": "2021-01-26 17:39:35.070",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\nval aSteps \u003d (0 to 100 by 100).toArray.map(_.toDouble / 100.0)",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-27 11:06:27.110",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34maSteps\u001b[0m: \u001b[1m\u001b[32mArray[Double]\u001b[0m \u003d Array(0.0, 1.0)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1611590867733_916280516",
+      "id": "paragraph_1611590867733_916280516",
+      "dateCreated": "2021-01-25 16:07:47.734",
+      "dateStarted": "2021-01-27 11:06:27.212",
+      "dateFinished": "2021-01-27 11:07:26.223",
+      "status": "FINISHED"
+    },
+    {
+      "text": "%spark\naSteps.grouped(aSteps.size).toSeq ",
+      "user": "anonymous",
+      "dateUpdated": "2021-01-27 11:08:57.697",
+      "config": {
+        "colWidth": 12.0,
+        "fontSize": 9.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[1m\u001b[34mres1\u001b[0m: \u001b[1m\u001b[32mSeq[Array[Double]]\u001b[0m \u003d Stream([D@4ca29f1d, ?)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1611745587209_528741463",
+      "id": "paragraph_1611745587209_528741463",
+      "dateCreated": "2021-01-27 11:06:27.209",
+      "dateStarted": "2021-01-27 11:08:57.706",
+      "dateFinished": "2021-01-27 11:08:58.288",
       "status": "FINISHED"
     },
     {
       "text": "%spark\n",
       "user": "anonymous",
-      "dateUpdated": "2021-01-25 16:07:47.734",
+      "dateUpdated": "2021-01-27 11:08:57.705",
       "config": {},
       "settings": {
         "params": {},
@@ -214,9 +294,9 @@
       "apps": [],
       "runtimeInfos": {},
       "progressUpdateIntervalMs": 500,
-      "jobName": "paragraph_1611590867733_916280516",
-      "id": "paragraph_1611590867733_916280516",
-      "dateCreated": "2021-01-25 16:07:47.734",
+      "jobName": "paragraph_1611745737705_667480790",
+      "id": "paragraph_1611745737705_667480790",
+      "dateCreated": "2021-01-27 11:08:57.705",
       "status": "READY"
     }
   ],

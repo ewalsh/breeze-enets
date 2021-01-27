@@ -1,6 +1,7 @@
 package com.github.timsetsfire.enets
 
 // ewalsh fork -- added try catch for pseudoinverse matrix which can fail
+// -- added mse evaluator
 
 
 package object utils {
@@ -9,6 +10,9 @@ package object utils {
   import breeze.numerics.{abs, signum, sqrt}
   import breeze.stats.{mean, variance}
   import scala.util.Try
+
+  case class ModelFit(b0: Double, b: DenseVector[Double], lambda: Double,
+    alpha: Double, eval: Double)
 
   // instead of adding in a vector of ones to represent the bias, use the following with the Params case class
   def g(x: DenseMatrix[Double], b: Params) = {

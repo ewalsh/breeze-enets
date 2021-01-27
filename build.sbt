@@ -1,6 +1,6 @@
 name := "enets"
 
-version := "1.01"
+version := "1.03"
 
 scalaVersion := "2.12.8"
 
@@ -16,7 +16,11 @@ libraryDependencies  ++= Seq(
 
 // The visualization library is distributed separately as well.
 // It depends on LGPL code
-"org.scalanlp" %% "breeze-viz" % "1.0"
+"org.scalanlp" %% "breeze-viz" % "1.0",
+
+// To utilize parallel processing within the cross-validation model
+// this fork adds the akka framework
+"com.typesafe.akka" %% "akka-actor" % "2.6.11"
 )
 
 scalacOptions ++= Seq("-deprecation", "-feature")
