@@ -6,3 +6,4 @@ project/target
 notebooks/.ipynb_checkpoints/
 *.log
 *.out
+logs/*
