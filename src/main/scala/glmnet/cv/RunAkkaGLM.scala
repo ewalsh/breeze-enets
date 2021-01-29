@@ -59,7 +59,8 @@ object RunAkka {
   var inputs: Option[AkkaInput] = None
   var fittedModel: Option[CvModelFit] = None
 
-  def fitAkka(inputs: Option[AkkaInput]): Unit = {
+  // inputs: Option[AkkaInput]
+  def fitAkka(): Unit = {
     inputs match {
       case None => println("Set Input Variables")
       case _ => {
