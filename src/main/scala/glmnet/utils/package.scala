@@ -10,6 +10,7 @@ package object utils {
   import breeze.numerics.{abs, signum, sqrt}
   import breeze.stats.{mean, variance}
   import scala.util.Try
+  import ai.economicdatasciences.enets.utils.NearPD
 
   case class ModelFit(b0: Double, b: DenseVector[Double], lambda: Double,
     alpha: Double, eval: Double)
@@ -38,7 +39,12 @@ package object utils {
   }
 
   def tryPseudoInv(mat: DenseMatrix[Double]): Try[DenseMatrix[Double]] = Try(pinv(sqrt(mat))) recoverWith {
-    case exception => Try(inv(sqrt(mat)))
+    case exception => Try { //Try(inv(sqrt(mat)))
+      // ensure positive definite
+      val nearPD = new NearPD(mat)
+      val nearestPD = nearPD.generate
+      nearestPD
+    }
   }
 
   def stdizeMatrix(x: DenseMatrix[Double]) = {
