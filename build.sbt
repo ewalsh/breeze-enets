@@ -1,6 +1,6 @@
 name := "enets"
 
-version := "1.03"
+version := "1.04"
 
 scalaVersion := "2.12.8"
 
