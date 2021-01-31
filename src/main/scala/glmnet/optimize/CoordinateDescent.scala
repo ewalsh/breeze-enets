@@ -12,7 +12,7 @@ class CoordinateDescent( cost: (Params, Double, Double) => Double,
                          s: DenseVector[Double],
                          weightFunction: (DenseVector[Double]) => DenseVector[Double]) {
 
-  def optimize(alpha: Double, lambda: Double, params: Params, tolerance: Double = 1e-7, nz: Array[Int] = Array.empty) = {
+  def optimize(alpha: Double, lambda: Double, params: Params, tolerance: Double = 1e-6, nz: Array[Int] = Array.empty) = {
     //println("optimizing")
     def descend(params: Params, ind: Int): Unit = {
       val b = params.b(ind)
@@ -29,7 +29,7 @@ class CoordinateDescent( cost: (Params, Double, Double) => Double,
       else interceptDescend(params)
     }
 
-    def update(params: Params, tolerance: Double = 1e-7): Unit = {
+    def update(params: Params, tolerance: Double = 1e-6): Unit = {
       val j = cost(params, lambda, alpha)
       //val randind = DenseVector.rand(params.nparams, Binomial(1, scd)).toArray.zipWithIndex.filter{ tup => tup._1 == 1 & tup._2 > 0}.map{ _._2}
       if(params.intercept) interceptDescend(params)
@@ -47,5 +47,11 @@ class CoordinateDescent( cost: (Params, Double, Double) => Double,
       }
     }
     update(params, tolerance)
+    // var iter = 0
+    // while(iter < 100){
+    //   update(params, tolerance)
+    //   iter += 1
+    //   println(iter)
+    // }
   }
 }

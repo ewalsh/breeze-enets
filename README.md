@@ -1,6 +1,7 @@
 # Notes for fork
 This fork builds on the great work done by @timsetsfire. The changes I made were to:
 1. Perform a simple update to scala 2.12 and breeze 1.0.
+
 2. I personally prefer Apache Zeppelin to Jupyter and so I have added a Docker image to make this easier to run/test.
 
 You can get this working by running `docker-compose up` in the base directory
@@ -13,6 +14,10 @@ Then go to http://localhost:8080
 5. A powerful part of this framework is to search over both lambda and alpha. I have added an
 Akka distributed implementation to perform cross vaildation and selection of alpha.
   * You can see an implementation of this within the Zeppelin Notebook.
+
+6. Added the Higham (2002) algorithm for non positive definite matrices.
+  * The original paper makes a positive definite assumption, but data
+  is rarely this well structured in the wild.
 
 # ENETS (Elastic Nets in Scala)
 
@@ -68,6 +73,7 @@ linreg.fit
 // huber regression
 val hr = new RlmNet(x,y,rnorm=HuberT())
 hr.fit
+
 ~~~
 If you want to be able to use this in jupyter-scala notebooks, change the scala version in build.sbt to 2.11.x and run
 

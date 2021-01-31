@@ -10,6 +10,7 @@ package object utils {
   import breeze.numerics.{abs, signum, sqrt}
   import breeze.stats.{mean, variance}
   import scala.util.Try
+  import util.control.Breaks.break
   import ai.economicdatasciences.enets.utils.NearPD
 
   case class ModelFit(b0: Double, b: DenseVector[Double], lambda: Double,
@@ -38,21 +39,29 @@ package object utils {
     sig * pos;
   }
 
+  // positive definite issues were so common, I implemented this below more directly
   def tryPseudoInv(mat: DenseMatrix[Double]): Try[DenseMatrix[Double]] = Try(pinv(sqrt(mat))) recoverWith {
-    case exception => Try { //Try(inv(sqrt(mat)))
+    case exception => Try { 
       // ensure positive definite
       val nearPD = new NearPD(mat)
       val nearestPD = nearPD.generate
-      nearestPD
+      pinv(sqrt(nearestPD))
     }
   }
 
   def stdizeMatrix(x: DenseMatrix[Double]) = {
     val n = x.rows.toDouble
     val mu = mean(x(::,*))
+    if(mu.t.toArray.map(_.isNaN).filter(_ == true).length > 0){
+      println("Data errors, likely either NaN or Infinity")
+      break
+    }
     val sig = (n-1)/n*(diag(variance(x(::,*))))
-    val pinvOrInv = tryPseudoInv(sig).get
-    val xs = (x(*,::).map{ _ - mu.t})*pinvOrInv //pinv(sqrt(sig))
+    val nearPD = new NearPD(sig)
+    val nearestPD = nearPD.generate
+    val pinvOrNear = pinv(sqrt(nearestPD))
+     // tryPseudoInv(sig).get
+    val xs = (x(*,::).map{ _ - mu.t})*pinvOrNear //pinv(sqrt(sig))
     (xs, mu, sig)
   }
 

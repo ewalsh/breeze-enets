@@ -35,7 +35,7 @@ class RlmNet (
                rnorm: RobustNorm = LeastSquares,
                lambdaSeq: DenseVector[Double] = DenseVector.zeros[Double](100),
                alpha: Double = 1d,
-               tolerance: Double = 1e-7,
+               tolerance: Double = 1e-3,
                standardizeFeatures: Boolean = true,
                standardizeTarget: Boolean = false,
                intercept: Boolean = true
@@ -70,7 +70,7 @@ class GlmNet(
                link: String = "identity",
                lambdaSeq: DenseVector[Double] = DenseVector.zeros[Double](100),
                alpha: Double = 1d,
-               tolerance: Double = 1e-7,
+               tolerance: Double = 1e-3,
                standardizeFeatures: Boolean = true,
                standardizeTarget: Boolean = false,
                intercept: Boolean = true
@@ -87,7 +87,7 @@ class ElasticNet (
                    val rnorm: RobustNorm = LeastSquares,
                    val lambdaSeq: DenseVector[Double] = DenseVector.zeros[Double](100),
                    val alpha: Double = 1d,
-                   val tolerance: Double = 1e-7,
+                   val tolerance: Double = 1e-3,
                    val standardizeFeatures: Boolean = true,
                    val standardizeTarget: Boolean = false,
                    val intercept: Boolean = false
