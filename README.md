@@ -16,7 +16,7 @@ Akka distributed implementation to perform cross vaildation and selection of alp
   * You can see an implementation of this within the Zeppelin Notebook.
 
 6. Added the Higham (2002) algorithm for non positive definite matrices.
-  * The original paper makes a positive definite assumption, but data
+  * The original project makes a positive definite assumption, but data
   is rarely this well structured in the wild.
 
 # ENETS (Elastic Nets in Scala)
