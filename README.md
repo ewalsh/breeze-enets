@@ -19,6 +19,20 @@ Akka distributed implementation to perform cross vaildation and selection of alp
   * The original project makes a positive definite assumption, but data
   is rarely this well structured in the wild.
 
+~~~
+import java.io.File
+import breeze.linalg.csvread
+import com.github.timsetsfire.enets.utils.mseEval
+import ai.economicdatasciences.enets.cv.RunAkka._
+import breeze.linalg.{DenseVector, DenseMatrix}
+
+val x = csvread(new File("./conf/data/bostonX.csv"))
+val y = csvread(new File("./conf/data/bostonY.csv")).toDenseVector
+val nfld = x.rows / 3
+setVariables(x, y, nfld, 0.1, mseEval, tolerance = 1e-3)
+fitAkka
+~~~
+
 # ENETS (Elastic Nets in Scala)
 
 Simple framework for running generalized linear models or robust linear models with elastic net regularization in scala.  Optimization is completed via coordinate descent as laid out in [Regularization Paths for Generalized Linear Models via Coordinate Descent](http://web.stanford.edu/~hastie/Papers/glmnet.pdf)

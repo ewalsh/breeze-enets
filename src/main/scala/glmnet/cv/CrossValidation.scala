@@ -101,4 +101,8 @@ class CvGlmNet(
      CvModelFit(avgBestIcept, avgBestBetas, bestLda, alpha,
       avgEval, sdEval, worstEval)
    }
+
+   def predict(input: DenseMatrix[Double], betas: DenseVector[Double], intercept: Double): DenseVector[Double] = {
+     (input * betas) + intercept
+   }
 }
