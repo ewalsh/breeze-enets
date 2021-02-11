@@ -95,9 +95,10 @@ class CvGlmNet(
 
      val avgBestIcept = breeze.stats.mean(DenseVector(bestFitArr.map(_.b0)))
      val avgBestBetas = breeze.stats.mean(DenseMatrix(bestFitArr.map(_.b):_*), Axis._0).t
-     val bestLda = bestFitArr(bestId).lambda
+     val bestLda = bestFitArr(0).lambda
      // translate lambda
      val ldaSeq = enet.getLambdaSeq
+     // val ldaId = ldaSeq.toArray.zipWithIndex.filter(_._1 == ldaSeq(bestId))(0)._2
      val lambda = 2*breeze.numerics.exp(ldaSeq(bestId)) - breeze.numerics.exp(ldaSeq(bestId - 1))
      // fit model
      val (icept, betas) = enet.fitOne(lambda, alpha)
