@@ -41,7 +41,7 @@ package object utils {
 
   // positive definite issues were so common, I implemented this below more directly
   def tryPseudoInv(mat: DenseMatrix[Double]): Try[DenseMatrix[Double]] = Try(pinv(sqrt(mat))) recoverWith {
-    case exception => Try { 
+    case exception => Try {
       // ensure positive definite
       val nearPD = new NearPD(mat)
       val nearestPD = nearPD.generate
@@ -75,4 +75,7 @@ package object utils {
 
   val mseEval = (pred: DenseVector[Double], target: DenseVector[Double]) =>
     breeze.stats.mean((pred - target).map(x => scala.math.pow(x, 2)))
+
+  val sseEval = (pred: DenseVector[Double], target: DenseVector[Double]) =>
+    breeze.linalg.sum((pred - target).map(x => scala.math.pow(x, 2)))
 }

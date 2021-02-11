@@ -1003,7 +1003,7 @@
         },
         "spark.jars": {
           "name": "spark.jars",
-          "value": "/opt/zeppelin-0.9.0-preview2-bin-all/jars/enets_2.12-1.04.jar,/opt/zeppelin-0.9.0-preview2-bin-all/jars/eds-plot-0.1.jar",
+          "value": "/opt/zeppelin-0.9.0-preview2-bin-all/jars/enets_2.12-1.05.jar,/opt/zeppelin-0.9.0-preview2-bin-all/jars/eds-plot-0.1.jar",
           "type": "string",
           "description": "Comma-separated list of jars to include on the driver and executor classpaths. Globs are allowed."
         },

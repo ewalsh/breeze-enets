@@ -209,6 +209,26 @@ class ElasticNet (
     }
   }
 
+  /** fit elastic net with specific lambda and alpha
+   */
+  def fitOne(lambda: Double, alpha: Double): (Double, DenseVector[Double]) = {
+    val z = dist.z(x, y, exposure, parms)
+    val s = dist.w(x, y, exposure, parms)
+    val r = (y - dist.yhat(x, exposure, parms) )
+    weight := rnorm.w(r / mad(r))
+    parms.nzbv := (- abs( x.t * r )/x.rows.toDouble <:< - lambda * alpha) |:| parms.nzbv
+    val nz = parms.nzbv.toArray.zipWithIndex.filter{ _._1 == true}.map{ _._2}
+    val cd = new CoordinateDescent(costFunc(dist), x, z, weight, s, weightFunction)
+    cd.optimize( alpha, lambda, parms, tolerance, nz = nz)
+    parms.nzbv := ( parms.b :!= 0d )
+    if(family=="negbin") {
+      val df = (x.rows - parms.nzbv.activeSize).toDouble
+      val deviance = dist.dev(parms)
+      parms.scale(0) = if (df > 0) deviance / df else 0.0001
+    }
+    (parms.b0(0), parms.b)
+  }
+
   /** plot the coordinate path
     */
   def plotCoordinatePath = {

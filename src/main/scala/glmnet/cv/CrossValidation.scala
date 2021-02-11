@@ -89,16 +89,25 @@ class CvGlmNet(
      val bestId = radjLdaErr.toArray.zipWithIndex.filter(_._1 == minRAdj)(0)._2
      // build model on full data using best lambda
      val bestFitArr = mfArr.map(arr => arr(bestId))
+     // // run final model over all data
+     val enet = new GlmNet(features, target, offset, family, link, lambdaSeq, alpha,
+       tolerance, standardizeFeatures, standardizeTarget, intercept)
+
      val avgBestIcept = breeze.stats.mean(DenseVector(bestFitArr.map(_.b0)))
      val avgBestBetas = breeze.stats.mean(DenseMatrix(bestFitArr.map(_.b):_*), Axis._0).t
-     val bestLda = bestFitArr(0).lambda
+     val bestLda = bestFitArr(bestId).lambda
+     // translate lambda
+     val ldaSeq = enet.getLambdaSeq
+     val lambda = 2*breeze.numerics.exp(ldaSeq(bestId)) - breeze.numerics.exp(ldaSeq(bestId - 1))
+     // fit model
+     val (icept, betas) = enet.fitOne(lambda, alpha)
      // worst evaluation
      val evalDV = DenseVector(bestFitArr.map(_.eval))
      val avgEval = breeze.stats.mean(evalDV)
      val sdEval = breeze.stats.stddev(evalDV)
      val worstEval = breeze.linalg.max(evalDV)
 
-     CvModelFit(avgBestIcept, avgBestBetas, bestLda, alpha,
+     CvModelFit(icept, betas, lambda, alpha,
       avgEval, sdEval, worstEval)
    }
 
